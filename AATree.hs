@@ -27,7 +27,11 @@ emptyTree :: AATree a
 emptyTree = EmptyTree
 
 get :: (Ord a) => a -> AATree a -> Maybe a
-get = error "get not implemented"
+get _ EmptyTree = Nothing
+get x (Node _ left val right)
+  | x == val = Just val
+  | x < val = get x left
+  | otherwise = get x right
 
 -- You may find it helpful to define
 split :: AATree a -> AATree a
@@ -88,12 +92,15 @@ checkLevels :: AATree a -> Bool
 checkLevels = error "checkLevels not implemented"
 
 isEmpty :: AATree a -> Bool
-isEmpty = error "isEmpty not implemented"
+isEmpty EmptyTree = True
+isEmpty (Node _ _ _ _) = False
 
 leftSub :: AATree a -> AATree a
-leftSub = error "leftSub not implemented"
+leftSub EmptyTree = EmptyTree
+leftSub (Node _ lt _ _) = lt
 
 rightSub :: AATree a -> AATree a
-rightSub = error "rightSub not implemented"
+rightSub EmptyTree = EmptyTree
+rightSub (Node _ _ _ rt) = rt
 
 --------------------------------------------------------------------------------
