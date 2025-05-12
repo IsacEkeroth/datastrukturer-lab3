@@ -1,12 +1,4 @@
-{-
-  to run:
-  $ ghc -e main Main.hs < swahili-small.txt
-
-  to compile and run:
-  $ ghc -O Main.hs && ./Main < swahili-small.txt
--}
-
-import AATree
+import AATree ()
 
 --------------------------------------------------------------------------------
 

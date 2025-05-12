@@ -18,18 +18,30 @@ where
 --------------------------------------------------------------------------------
 
 -- AA search trees
-data AATree a = TODO
+
+-- level left val right
+data AATree a = EmptyTree | Node Int (AATree a) a (AATree a)
   deriving (Eq, Show, Read)
 
 emptyTree :: AATree a
-emptyTree = error "emptyTree not implemented"
+emptyTree = EmptyTree
 
 get :: (Ord a) => a -> AATree a -> Maybe a
 get = error "get not implemented"
 
 -- You may find it helpful to define
---   split :: AATree a -> AATree a
---   skew  :: AATree a -> AATree a
+split :: AATree a -> AATree a
+split EmptyTree = EmptyTree
+split (Node level left val (Node rlevel rleft rval rright@(Node rrlevel _ _ _)))
+  | level == rrlevel = Node (rlevel + 1) (Node level left val rleft) rval rright
+split t = t
+
+skew :: AATree a -> AATree a
+skew EmptyTree = EmptyTree
+skew (Node level (Node llevel lleft lval lright) val right)
+  | level == llevel = Node llevel lleft lval (Node level lright val right)
+skew t = t
+
 -- and call these from insert.
 insert :: (Ord a) => a -> AATree a -> AATree a
 insert = error "insert not implemented"
