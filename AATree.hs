@@ -15,6 +15,8 @@ module AATree
   )
 where
 
+import Text.XHtml (hidden)
+
 --------------------------------------------------------------------------------
 
 -- AA search trees
@@ -55,10 +57,12 @@ inorder EmptyTree = []
 inorder (Node _ l v r) = inorder l ++ [v] ++ inorder r
 
 size :: AATree a -> Int
-size = error "size not implemented"
+size EmptyTree = 1
+size (Node _ l _ r) = size l + 1 + size r
 
 height :: AATree a -> Int
-height = error "height not implemented"
+height EmptyTree = 0
+height (Node lv _ _ _) = lv
 
 --------------------------------------------------------------------------------
 -- Optional function
