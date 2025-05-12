@@ -51,7 +51,8 @@ insert :: (Ord a) => a -> AATree a -> AATree a
 insert = error "insert not implemented"
 
 inorder :: AATree a -> [a]
-inorder = error "inorder not implemented"
+inorder EmptyTree = []
+inorder (Node _ l v r) = inorder l ++ [v] ++ inorder r
 
 size :: AATree a -> Int
 size = error "size not implemented"
