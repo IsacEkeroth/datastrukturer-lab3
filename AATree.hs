@@ -15,8 +15,6 @@ module AATree
   )
 where
 
-import Text.XHtml (hidden)
-
 --------------------------------------------------------------------------------
 
 -- AA search trees
