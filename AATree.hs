@@ -89,20 +89,22 @@ checkTree root =
       | otherwise = x : nodes (leftSub x) ++ nodes (rightSub x)
 
 -- True if the given list is ordered
-isSorted :: Ord a => [a] -> Bool
-isSorted []       = True
-isSorted [_]      = True
-isSorted (x:y:zs) = x < y && isSorted (y:zs)
+isSorted :: (Ord a) => [a] -> Bool
+isSorted [] = True
+isSorted [_] = True
+isSorted (x : y : zs) = x < y && isSorted (y : zs)
 
 -- Check if the invariant is true for a single AA node
--- You may want to write this as a conjunction e.g.
---   checkLevels node =
---     leftChildOK node &&
---     rightChildOK node &&
---     rightGrandchildOK node
--- where each conjunct checks one aspect of the invariant
 checkLevels :: AATree a -> Bool
-checkLevels = error "checkLevels not implemented"
+checkLevels EmptyTree = True
+checkLevels (Node lvl l _ r) = leftChildOK && rightChildOK && rightGrandchildOK
+  where
+    leftChildOK = height l < lvl -- left child lvl < lvl
+    rightChildOK = height r == lvl || height r == lvl - 1 -- right child lvl = lvl || lvl - 1
+    rightGrandchildOK =
+      case r of -- right level <= parent
+        Node _ _ _ rr -> height rr < lvl -- right-right level < parent
+        _ -> True
 
 isEmpty :: AATree a -> Bool
 isEmpty EmptyTree = True
