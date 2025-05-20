@@ -52,11 +52,11 @@ insert = error "insert not implemented"
 
 inorder :: AATree a -> [a]
 inorder EmptyTree = []
-inorder (Node _ l v r) = inorder l ++ [v] ++ inorder r
-
-inorder :: AATree a -> [a]
-inorder Empty                = []
-inorder (Node l v r _) = inorder l ++ [v] ++ inorder r
+inorder (Node 1 _ v _) = [v]
+inorder (Node _ _ _ EmptyTree) = []
+inorder (Node lvl l v r@(Node rlvl rl rv rr))
+  | lvl == rlvl = inorder l ++ [v] ++ inorder rl ++ [rv] ++ inorder rr
+  | otherwise = inorder l ++ [v] ++ inorder r
 
 size :: AATree a -> Int
 size EmptyTree = 0
