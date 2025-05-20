@@ -35,15 +35,11 @@ get x (Node _ left val right)
 
 -- You may find it helpful to define
 split :: AATree a -> AATree a
-split EmptyTree = EmptyTree
 split (Node level left val (Node rlevel rleft rval rright@(Node rrlevel _ _ _)))
   | level == rrlevel = Node (rlevel + 1) (Node level left val rleft) rval rright
-split (Node level left val (Node rlevel rleft rval EmptyTree)) =
-  Node level left val (Node rlevel rleft rval EmptyTree)
 split t = t
 
 skew :: AATree a -> AATree a
-skew EmptyTree = EmptyTree
 skew (Node level (Node llevel lleft lval lright) val right)
   | level == llevel = Node llevel lleft lval (Node level lright val right)
 skew t = t
@@ -66,7 +62,7 @@ size (Node _ l _ r) = size l + 1 + size r
 
 height :: AATree a -> Int
 height EmptyTree = 0
-height (Node lv _ _ _) = lv
+height (Node _ l _ r) = 1 + max (height l) (height r)
 
 --------------------------------------------------------------------------------
 -- Optional function
@@ -97,12 +93,15 @@ checkLevels :: AATree a -> Bool
 checkLevels EmptyTree = True
 checkLevels (Node lvl l _ r) = leftChildOK && rightChildOK && rightGrandchildOK
   where
-    leftChildOK = height l < lvl -- left child lvl < lvl
-    rightChildOK = height r == lvl || height r == lvl - 1 -- right child lvl = lvl || lvl - 1
+    leftChildOK = levelOf l < lvl -- left child lvl < lvl
+    rightChildOK = levelOf r == lvl || levelOf r == lvl - 1 -- right child lvl = lvl || lvl - 1
     rightGrandchildOK =
       case r of -- right level <= parent
-        Node _ _ _ rr -> height rr < lvl -- right-right level < parent
+        Node _ _ _ rr -> levelOf rr < lvl -- right-right level < parent
         _ -> True
+
+    levelOf EmptyTree = 0
+    levelOf (Node nlvl _ _ _) = nlvl
 
 isEmpty :: AATree a -> Bool
 isEmpty EmptyTree = True
