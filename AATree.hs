@@ -47,16 +47,18 @@ skew (Node level (Node llevel lleft lval lright) val right)
 skew t = t
 
 -- and call these from insert.
-insert :: (Ord a) => a -> AATree a -> AATree a
-insert = error "insert not implemented"
+insert :: Ord a => a -> AATree a -> AATree a
+insert x EmptyTree = Node Empty x Empty 1
+insert x t@(Node l v r lvl)
+  | x < v     = split . skew $ n { left  = insert x l }
+  | x > v     = split . skew $ n { right = insert x r }
+  | otherwise = t  -- x == v, do nothing
+  where
+    n = t
 
 inorder :: AATree a -> [a]
 inorder EmptyTree = []
 inorder (Node _ l v r) = inorder l ++ [v] ++ inorder r
-
-inorder :: AATree a -> [a]
-inorder Empty                = []
-inorder (Node l v r _) = inorder l ++ [v] ++ inorder r
 
 size :: AATree a -> Int
 size EmptyTree = 0
