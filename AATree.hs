@@ -38,6 +38,8 @@ split :: AATree a -> AATree a
 split EmptyTree = EmptyTree
 split (Node level left val (Node rlevel rleft rval rright@(Node rrlevel _ _ _)))
   | level == rrlevel = Node (rlevel + 1) (Node level left val rleft) rval rright
+split (Node level left val (Node rlevel rleft rval EmptyTree)) =
+  Node level left val (Node rlevel rleft rval EmptyTree)
 split t = t
 
 skew :: AATree a -> AATree a
@@ -56,11 +58,7 @@ insert x t@(Node lvl l v r)
 
 inorder :: AATree a -> [a]
 inorder EmptyTree = []
-inorder (Node 1 _ v _) = [v]
-inorder (Node _ _ _ EmptyTree) = []
-inorder (Node lvl l v r@(Node rlvl rl rv rr))
-  | lvl == rlvl = inorder l ++ [v] ++ inorder rl ++ [rv] ++ inorder rr
-  | otherwise = inorder l ++ [v] ++ inorder r
+inorder (Node _ l v r) = inorder l ++ [v] ++ inorder r
 
 size :: AATree a -> Int
 size EmptyTree = 0
