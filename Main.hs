@@ -20,13 +20,6 @@ main = do
 
   -- calculate and print statistics
   -- use fromIntegral/ceiling/logBase
-
-  -- Size: 12582
-  -- Height: 18
-  -- Optimal height:
-  -- Height / Optimal height: 1.3846153846153846
-  -- checkTree: True
-  -- First 20 words: A ABP AC AD ADLugha ADNa ADR ADSL ADWabantu ADwaarabu AIDS AL ...
   putStrLn $ "Size: " ++ show (size aatree)
   putStrLn $ "Height: " ++ show (height aatree)
   let n = size aatree
