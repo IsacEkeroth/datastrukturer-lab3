@@ -54,6 +54,10 @@ inorder :: AATree a -> [a]
 inorder EmptyTree = []
 inorder (Node _ l v r) = inorder l ++ [v] ++ inorder r
 
+inorder :: AATree a -> [a]
+inorder Empty                = []
+inorder (Node l v r _) = inorder l ++ [v] ++ inorder r
+
 size :: AATree a -> Int
 size EmptyTree = 0
 size (Node _ l _ r) = size l + 1 + size r
