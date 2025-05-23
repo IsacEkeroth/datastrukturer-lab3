@@ -59,8 +59,10 @@ insert x t@(Node lvl l v r)
 
 -- O(n)
 inorder :: AATree a -> [a]
-inorder EmptyTree = []
-inorder (Node _ l v r) = inorder l ++ [v] ++ inorder r
+inorder t = inorder' t []
+  where
+    inorder' EmptyTree acc = acc
+    inorder' (Node _ l v r) acc = inorder' l (v : inorder' r acc)
 
 -- O(n)
 size :: AATree a -> Int
